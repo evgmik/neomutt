@@ -27,6 +27,7 @@ typedef enum history_class
   HC_PATTERN,
   HC_OTHER,
   HC_MBOX,
+  HC_MATCHER,
   /* insert new items here to keep history file working */
   HC_LAST
 } history_class_t;
