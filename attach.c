@@ -328,9 +328,26 @@ void mutt_check_lookup_list(struct Body *b, char *type, int len)
   }
 }
 
-/* returns -1 on error, 0 or the return code from mutt_do_pager() on success */
-int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
-                         struct AttachPtr **idx, short idxlen)
+/**
+ * mutt_view_attachment - display a message attachment.
+ * @param fp:     Source file stream. Can be NULL.
+ * @param a:      The message body containing the attachment.
+ * @param flag:   Option flag for mutt_view_attachment. One of MUTT_MAILCAP, MUTT_REGULAR, or MUTT_AS_TEXT
+ * @param hdr:    Message header for the current message. Can be NULL.
+ * @param idx:    YYY
+ * @param idxlen: YYY
+
+ * Display a message attachment using the viewer program configured in mailcap.
+ * Viewer processes are opened and waited on synchronously so viewing an
+ * attachment this way will block the main mutt process until the viewer process
+ * exits.
+ *
+ * @returns
+ *  - 0 if the viewer is run and exited succesfully
+ *  - -1 on error
+ *  - The return value of mutt_do_pager() when it is used
+ */
+int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr, struct AttachPtr **idx, short idxlen)
 {
   char tempfile[_POSIX_PATH_MAX] = "";
   char pagerfile[_POSIX_PATH_MAX] = "";
