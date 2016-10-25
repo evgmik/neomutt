@@ -408,6 +408,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, int flag, struct Header *hdr,
 
     if (rfc1524_expand_filename(entry->nametemplate, fname, tempfile, sizeof(tempfile)))
     {
+      mutt_debug(1, "nametemplate: %s, fname: %s, expanded filename: %s\n",
+                 entry->nametemplate, fname, tempfile);
       if (fp == NULL && (mutt_strcmp(tempfile, a->filename) != 0))
       {
         /* send case: the file is already there */
