@@ -33,8 +33,10 @@ struct Rfc1524MailcapEntry
   char *printcommand;
   char *nametemplate;
   char *convert;
-  bool needsterminal : 1; /* endwin() and system */
-  bool copiousoutput : 1; /* needs pager, basically */
+  /*  char *description; */ /* we don't need this */
+  bool needsterminal : 1;   /* endwin() and system */
+  bool copiousoutput : 1;   /* needs pager, basically */
+  bool backgroundopen : 1;  /* spawn viewer command in background */
 };
 
 struct Rfc1524MailcapEntry *rfc1524_new_entry(void);
