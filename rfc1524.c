@@ -278,7 +278,7 @@ static int rfc1524_mailcap_parse(struct Body *a, char *filename, char *type,
         {
           if (entry != NULL)
           {
-            entry->backgroundopen = TRUE;
+            entry->backgroundopen = true;
           }
         }
         else if (ascii_strncasecmp(field, "test", 4) == 0)
