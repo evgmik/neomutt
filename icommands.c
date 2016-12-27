@@ -20,6 +20,7 @@
 #include "buffer.h"
 #include "icommands.h"
 #include "lib.h"
+#include "summary.h"
 
 /* prototypes for interactive commands */
 static int icmd_test(struct Buffer *, struct Buffer *, unsigned long, struct Buffer *);
@@ -129,9 +130,8 @@ static int icmd_help(struct Buffer *buf, struct Buffer *s, unsigned long data, s
 
 static int icmd_test(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)
 {
-  /* TODO: implement ':test' command as suggested by flatcap in #162 */
-  snprintf(err->data, err->dsize, _("Not implemented yet."));
-  return 1;
+  mutt_summary();
+  return 0;
 }
 
 static int icmd_bind(struct Buffer *buf, struct Buffer *s, unsigned long data, struct Buffer *err)

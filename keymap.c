@@ -1049,6 +1049,8 @@ const struct Binding *km_get_table(int menu)
     case MENU_MIX:
       return OpMix;
 #endif
+    case MENU_SUMMARY:
+      return OpSummary;
   }
   return NULL;
 }
