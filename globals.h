@@ -67,6 +67,7 @@ WHERE char *Editor;
 WHERE char *EmptySubject;
 WHERE char *EscChar;
 WHERE char *FolderFormat;
+WHERE char *NetFolderFormat;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
 WHERE struct MbCharTable *Fromchars;
