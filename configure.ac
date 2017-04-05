@@ -422,6 +422,15 @@ AC_REPLACE_FUNCS([wcscasecmp strcasestr])
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)
 
+AC_ARG_WITH(unittest, AS_HELP_STRING([--with-unittest],[Build in unit-test mode]),
+    [
+        mutt_unit_test=yes
+        AC_DEFINE(WITH_UNITTEST,1,[Define to build in unit-test mode])
+        LIBUNITTEST="-Lunit-test -lunittest"
+        LIBUNITTESTDEPS="unit-test/libunittest.a"
+   ])
+AM_CONDITIONAL(BUILD_UNITTEST, test x$mutt_unit_test = xyes)
+
 AC_ARG_WITH(homespool,
 	AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user's directory where new mail is spooled]), with_homespool=${withval})
 
