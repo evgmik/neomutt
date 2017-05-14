@@ -471,6 +471,10 @@ AC_ARG_WITH(domain, AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS doma
 		fi
 	fi])
 
+dnl Smart Columns
+dnl AC_SEARCH_LIBS([scols_new_table], [smartcols], AC_MSG_ERROR([could not find libsmartcols @ util-linux]))
+LIBS="$LIBS -lsmartcols"
+
 dnl -- socket dependencies --
 
 dnl getaddrinfo/getaddrinfo_a is used by getdomain.c, and requires libnsl and
@@ -892,7 +896,7 @@ AC_SUBST(HCACHE_DEPS)
 
 dnl -- iconv/gettext --
 
-AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT_VERSION([0.18])
 AM_GNU_GETTEXT([external])
 
 AM_ICONV
