@@ -267,14 +267,14 @@ int km_bind_err(char *s, int menu, int op, char *macro, char *descr, struct Buff
           if (err)
           {
             /* err was passed, put the string there */
-            snprintf(err->data, err->dsize, _("Binding '%s' will alias '%s'"),
-                     old_binding, new_binding);
+            snprintf(err->data, err->dsize, _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"),
+                     old_binding, new_binding, mutt_getnamebyvalue(menu, Menus), new_binding);
           }
           else
           {
             mutt_error(
-                _("Warning: For menu '%s', binding '%s' will alias '%s'"),
-                mutt_getnamebyvalue(menu, Menus), old_binding, new_binding);
+                _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"),
+                old_binding, new_binding, mutt_getnamebyvalue(menu, Menus), new_binding);
           }
           retval = -2;
         }
@@ -453,6 +453,7 @@ static int retry_generic(int menu, keycode_t *keys, int keyslen, int lastkey)
  *      >0              function to execute
  *      OP_NULL         no function bound to key sequence
  *      -1              error occurred while reading input
+ *      -2              a timeout or sigwinch occurred
  */
 int km_dokey(int menu)
 {
@@ -505,7 +506,7 @@ int km_dokey(int menu)
 
     LastKey = tmp.ch;
     if (LastKey < 0)
-      return -1;
+      return LastKey;
 
     /* do we have an op already? */
     if (tmp.op)

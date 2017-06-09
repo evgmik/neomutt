@@ -4,7 +4,7 @@ dnl     autoreconf -i
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], [20170602], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
+AC_INIT([NeoMutt], [20170609], [neomutt-devel@neomutt.org], [mutt], [https://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AC_CONFIG_AUX_DIR([.build-aux])
 AM_INIT_AUTOMAKE
@@ -417,7 +417,7 @@ AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
 # include <unistd.h>
 ])
 
-AC_REPLACE_FUNCS([wcscasecmp strcasestr])
+AC_REPLACE_FUNCS([wcscasecmp])
 
 dnl Set the atime of files
 AC_CHECK_FUNCS(futimens)

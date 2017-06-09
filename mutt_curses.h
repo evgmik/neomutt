@@ -72,13 +72,6 @@
 
 #endif /* USE_SLANG_CURSES */
 
-/* AIX defines ``lines'' in <term.h>, but it's used as a var name in
- * various places in Mutt
- */
-#ifdef lines
-#undef lines
-#endif /* lines */
-
 #define BEEP()                                                                 \
   do                                                                           \
   {                                                                            \
@@ -280,10 +273,24 @@ void ci_start_color(void);
  * right column.
  */
 #ifdef HAVE_BKGDSET
-#define SETCOLOR(X) bkgdset(ColorDefs[X] | ' ')
+#define SETCOLOR(X)                                                            \
+  do                                                                           \
+  {                                                                            \
+    if (ColorDefs[X] != 0)                                                     \
+      bkgdset(ColorDefs[X] | ' ');                                             \
+    else                                                                       \
+      bkgdset(ColorDefs[MT_COLOR_NORMAL] | ' ');                               \
+  } while (0)
 #define ATTRSET(X) bkgdset(X | ' ')
 #else
-#define SETCOLOR(X) attrset(ColorDefs[X])
+#define SETCOLOR(X)                                                            \
+  do                                                                           \
+  {                                                                            \
+    if (ColorDefs[X] != 0)                                                     \
+      attrset(ColorDefs[X]);                                                   \
+    else                                                                       \
+      attrset(ColorDefs[MT_COLOR_NORMAL]);                                     \
+  } while (0)
 #define ATTRSET attrset
 #endif
 

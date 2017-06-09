@@ -73,7 +73,7 @@
 #define CHECK_PAGER                                                                  \
   if ((CurrentMenu == MENU_PAGER) && (idx >= 0) && (MuttVars[idx].flags & R_RESORT)) \
   {                                                                                  \
-    snprintf(err->data, err->dsize, _("Not available in this menu."));               \
+    snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));         \
     return -1;                                                                       \
   }
 
@@ -735,8 +735,8 @@ static int add_to_replace_list(struct ReplaceList **list, const char *pat,
 
   if (t->nmatch > t->rx->rx->re_nsub)
   {
-    snprintf(err->data, err->dsize, _("Not enough subexpressions for "
-                                      "template"));
+    snprintf(err->data, err->dsize, "%s", _("Not enough subexpressions for "
+                                            "template"));
     remove_from_replace_list(list, pat);
     return -1;
   }
@@ -2067,6 +2067,13 @@ static void restore_default(struct Option *p)
     mutt_set_current_menu_redraw_full();
 }
 
+static void ESC_char(char c, char *p, char *dst, size_t len)
+{
+  *p++ = '\\';
+  if (p - dst < len)
+    *p++ = c;
+}
+
 static size_t escape_string(char *dst, size_t len, const char *src)
 {
   char *p = dst;
@@ -2074,25 +2081,18 @@ static size_t escape_string(char *dst, size_t len, const char *src)
   if (!len)
     return 0;
   len--; /* save room for \0 */
-#define ESC_CHAR(C)                                                            \
-  do                                                                           \
-  {                                                                            \
-    *p++ = '\\';                                                               \
-    if (p - dst < len)                                                         \
-      *p++ = C;                                                                \
-  } while (0)
   while (p - dst < len && src && *src)
   {
     switch (*src)
     {
       case '\n':
-        ESC_CHAR('n');
+        ESC_char('n', p, dst, len);
         break;
       case '\r':
-        ESC_CHAR('r');
+        ESC_char('r', p, dst, len);
         break;
       case '\t':
-        ESC_CHAR('t');
+        ESC_char('t', p, dst, len);
         break;
       default:
         if ((*src == '\\' || *src == '"') && p - dst < len - 1)
@@ -2101,7 +2101,6 @@ static size_t escape_string(char *dst, size_t len, const char *src)
     }
     src++;
   }
-#undef ESC_CHAR
   *p = '\0';
   return p - dst;
 }
@@ -2425,13 +2424,13 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
     {
       if (query || unset || inv)
       {
-        snprintf(err->data, err->dsize, _("prefix is illegal with reset"));
+        snprintf(err->data, err->dsize, "%s", _("prefix is illegal with reset"));
         return -1;
       }
 
       if (*s->dptr == '=')
       {
-        snprintf(err->data, err->dsize, _("value is illegal with reset"));
+        snprintf(err->data, err->dsize, "%s", _("value is illegal with reset"));
         return -1;
       }
 
@@ -2439,7 +2438,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (CurrentMenu == MENU_PAGER)
         {
-          snprintf(err->data, err->dsize, _("Not available in this menu."));
+          snprintf(err->data, err->dsize, "%s", _("Not available in this menu."));
           return -1;
         }
         for (idx = 0; MuttVars[idx].option; idx++)
@@ -2466,7 +2465,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
       {
         if (unset || inv || query)
         {
-          snprintf(err->data, err->dsize, _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
           return -1;
         }
 
@@ -2478,7 +2477,7 @@ static int parse_set(struct Buffer *tmp, struct Buffer *s, unsigned long data,
           unset = 1;
         else
         {
-          snprintf(err->data, err->dsize, _("Usage: set variable=yes|no"));
+          snprintf(err->data, err->dsize, "%s", _("Usage: set variable=yes|no"));
           return -1;
         }
       }
@@ -4083,8 +4082,8 @@ void mutt_init(int skip_sys_rc, struct List *commands)
 
     if ((f = safe_fopen(SYSCONFDIR "/nntpserver", "r")))
     {
-      buffer[0] = '\0';
-      fgets(buffer, sizeof(buffer), f);
+      if (fgets(buffer, sizeof(buffer), f) == NULL)
+        buffer[0] = '\0';
       p = buffer;
       SKIPWS(p);
       c = p;
