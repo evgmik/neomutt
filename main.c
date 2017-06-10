@@ -98,9 +98,7 @@ static void usage(void)
          "  -D            print the value of all variables to stdout\n"
          "  -D -S         like -D, but hide the value of sensitive variables\n"
          "  -B            run in batch mode (do not start the ncurses UI)"));
-#ifdef DEBUG
   puts(_("  -d <level>    log debugging output to ~/.muttdebug0"));
-#endif
   puts(_(
          "  -E            edit the draft (-H) or include (-i) file\n"
          "  -e <command>  specify a command to be executed after initialization\n"
@@ -307,16 +305,12 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'd':
-#ifdef DEBUG
           if (mutt_atoi(optarg, &debuglevel_cmdline) < 0 || debuglevel_cmdline <= 0)
           {
             fprintf(stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
             return 1;
           }
           printf(_("Debugging at level %d.\n"), debuglevel_cmdline);
-#else
-          printf("%s", _("DEBUG was not defined during compilation. -d Ignored.\n"));
-#endif
           break;
 
         case 'E':
@@ -336,12 +330,8 @@ int main(int argc, char **argv, char **env)
           break;
 
         case 'l':
-#ifdef DEBUG
           debugfile_cmdline = optarg;
           printf(_("Debugging at file %s.\n"), debugfile_cmdline);
-#else
-          printf(_("DEBUG was not defined during compilation. -l Ignored.\n"));
-#endif
           break;
 
         case 'm':

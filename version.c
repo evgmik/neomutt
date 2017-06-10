@@ -115,11 +115,6 @@ static struct CompileOptions comp_opts[] = {
 #else
   { "curs_set", 0 },
 #endif
-#ifdef DEBUG
-  { "debug", 1 },
-#else
-  { "debug", 0 },
-#endif
   { "encrypt_to_self", 1 },
 #ifdef USE_FCNTL
   { "fcntl", 1 },

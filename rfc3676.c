@@ -332,11 +332,6 @@ int rfc3676_handler(struct Body *a, struct State *s)
  */
 void rfc3676_space_stuff(struct Header *hdr)
 {
-#ifdef DEBUG
-  int lc = 0;
-  size_t len = 0;
-  unsigned char c = '\0';
-#endif
   FILE *in = NULL, *out = NULL;
   char buf[LONG_STRING];
   char tmpfile[_POSIX_PATH_MAX];
@@ -356,12 +351,17 @@ void rfc3676_space_stuff(struct Header *hdr)
     return;
   }
 
+  // debug
+  int lc = 0;
+  size_t len = 0;
+  unsigned char c = '\0';
+
   while (fgets(buf, sizeof(buf), in))
   {
     if ((ascii_strncmp("From ", buf, 5) == 0) || buf[0] == ' ')
     {
       fputc(' ', out);
-#ifdef DEBUG
+
       lc++;
       len = mutt_strlen(buf);
       if (len > 0)
@@ -372,10 +372,10 @@ void rfc3676_space_stuff(struct Header *hdr)
       mutt_debug(4, "f=f: line %d needs space-stuffing: '%s'\n", lc, buf);
       if (len > 0)
         buf[len - 1] = c;
-#endif
     }
     fputs(buf, out);
   }
+
   safe_fclose(&in);
   safe_fclose(&out);
   mutt_set_mtime(hdr->content->filename, tmpfile);

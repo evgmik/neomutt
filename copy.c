@@ -585,7 +585,7 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
       if (copy_delete_attach(body, fpin, fpout, date))
         return -1;
 
-#ifdef DEBUG
+
       {
         LOFF_T fail = ((ftello(fpout) - new_offset) - new_length);
 
@@ -596,7 +596,6 @@ int _mutt_copy_message(FILE *fpout, FILE *fpin, struct Header *hdr,
           mutt_sleep(1);
         }
       }
-#endif
 
       /* Update original message if we are sync'ing a mailfolder */
       if (flags & MUTT_CM_UPDATE)

@@ -103,16 +103,12 @@ extern void (*mutt_error)(const char *, ...);
 
 void mutt_exit(int code);
 
-#ifdef DEBUG
 extern char debugfilename[_POSIX_PATH_MAX];
 extern FILE *debugfile;
 extern int debuglevel;
 extern char *debugfile_cmdline;
 extern int debuglevel_cmdline;
 void mutt_debug(int level, const char *fmt, ...);
-#else
-#define mutt_debug(...) do { } while (0)
-#endif
 
 
 /* Exit values used in send_msg() */
